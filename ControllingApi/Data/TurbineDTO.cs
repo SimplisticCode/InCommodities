@@ -1,0 +1,1 @@
+public record TurbineDTO(string Name, int Production){}
