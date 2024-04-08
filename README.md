@@ -14,22 +14,28 @@ The system consists of two main components: a RESTful HTTP server for user inter
 ### Installation
 1. Clone the repository using Git:
 
+```bash
+git clone https://github.com/SimplisticCode/InCommodities
+```
 
+2. Open the project in your IDE.
 
-- By default, the server will start on `http://localhost:5000/`. You can change the port in the `appsettings.json` file.
+3. Build the project using the IDE or the following command:
 
-## Usage
+```bash
+dotnet build
+```
 
-### Endpoints
-- **Increase Production Target**: `POST /api/production/increase`
-- Body: `{ "amount": 10 }`
-- **Decrease Production Target**: `POST /api/production/decrease`
-- Body: `{ "amount": 5 }`
-- **Submit Market Price**: `POST /api/market/submit-price`
-- Body: `{ "price": 6 }`
-- **Get Turbines Status**: `GET /api/turbines/status`
-- No body required. Returns a list of turbines with their expected production.
+4. Run the project using the IDE or the following command:
 
-### Examples
-- To set the market price to 6€ and increase the production target by 10MWh:
+```bash
+dotnet run --project InCommodities
+```
+
+5. The server should start successfully. You can now interact with the API using a REST client like Postman or cURL. 
+A Swagger UI is also available at `http://localhost:5000/swagger/index.html`, which provides a user-friendly interface for testing the API.
+
+## API Endpoints
+
+### GET /api/turbines
 

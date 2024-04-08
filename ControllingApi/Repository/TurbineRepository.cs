@@ -26,6 +26,10 @@ public class TurbineRepository : ITurbineRepository
         };
     }
 
+    /// <summary>
+    /// Stops all turbines.
+    /// </summary>
+    /// <returns></returns>
     public async Task StopAllTurbines()
     {
         foreach (var turbine in turbines)
@@ -35,6 +39,10 @@ public class TurbineRepository : ITurbineRepository
         }
     }
 
+    /// <summary>
+    /// Starts all turbines.
+    /// </summary>
+    /// <returns></returns>
     public async Task StartAllTurbines()
     {
         foreach (var turbine in turbines)
@@ -44,6 +52,11 @@ public class TurbineRepository : ITurbineRepository
         }
     }
 
+    /// <summary>
+    /// Starts a turbine with the given name.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public Task StartTurbine(string name)
     {
         var optionType = FindTurbine(name);
@@ -55,6 +68,11 @@ public class TurbineRepository : ITurbineRepository
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Stops a turbine with the given name.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public Task StopTurbine(string name)
     {
         var optionType = FindTurbine(name);
@@ -79,7 +97,7 @@ public class TurbineRepository : ITurbineRepository
     /// <summary>
     /// Removes a turbine from the repository.
     /// </summary>
-    /// <param name="turbine">The turbine to remove.</param>
+    /// <param name="name">The name of the turbine to remove.</param>
     public Task RemoveTurbine(string name)
     {
         var optionType = FindTurbine(name);
