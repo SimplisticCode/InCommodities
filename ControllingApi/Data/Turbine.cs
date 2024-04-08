@@ -1,10 +1,13 @@
-
+using System.ComponentModel.DataAnnotations;
 public class Turbine
 {
+    [Required]
     public int Capacity { get; set; }
 
+    [Required]
     public int ProductionCost { get; set; }
 
+    [Required, StringLength(50), Key]
     public string Name { get; set; }
 
     private bool running;
