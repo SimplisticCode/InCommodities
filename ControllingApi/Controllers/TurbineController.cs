@@ -46,6 +46,10 @@ namespace ControllingApi.Controllers
         [HttpPost("IncreaseCapacity", Name = "IncreaseCapacity")]
         public async Task<IActionResult> IncreaseCapacity(int amount)
         {
+            if (amount < 0)
+            {
+                return BadRequest("Amount to increase capacity cannot be negative");
+            }
             await _turbineManager.IncreaseCapacity(amount);
             _logger.LogInformation("Increased capacity by {amount}", amount);
             return Ok();
@@ -65,6 +69,10 @@ namespace ControllingApi.Controllers
         [HttpPost("DecreaseCapacity", Name = "DecreaseCapacity")]
         public async Task<IActionResult> DecreaseCapacity(int amount)
         {
+            if (amount < 0)
+            {
+                return BadRequest("Amount to decrease capacity cannot be negative");
+            }
             await _turbineManager.DecreaseCapacity(amount);
             _logger.LogInformation("Decreased capacity by {amount}", amount);
             return Ok();
@@ -85,6 +93,10 @@ namespace ControllingApi.Controllers
         [HttpPost("SetMarketPrice", Name = "SetMarketPrice")]
         public async Task<IActionResult> SetMarketPrice(int price)
         {
+            if (price < 0)
+            {
+                return BadRequest("Price cannot be negative");
+            }
             await _turbineManager.SetMarketPrice(price);
             _logger.LogInformation("Market price set to {price}", price);
             return Ok();
