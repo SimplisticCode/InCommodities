@@ -46,7 +46,7 @@ public class TurbineManager : ITurbineManager
         {
             if (_produced_capacity + turbine.Capacity <= _needed_capacity)
             {
-                turbine.Start();
+                await turbine.Start();
                 _produced_capacity += turbine.Capacity;
             }
         }
