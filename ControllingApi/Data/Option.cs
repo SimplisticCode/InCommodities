@@ -1,17 +1,14 @@
+namespace ControllingApi.Data;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-public struct Option<T>
+public readonly struct Option<T>
 {
-    private readonly T value;
-    private readonly bool hasValue;
+    private readonly T _value;
+    private readonly bool _hasValue;
 
     private Option(T value)
     {
-        this.value = value;
-        hasValue = true;
+        this._value = value;
+        _hasValue = true;
     }
 
     public static Option<T> Some(T value)
@@ -29,15 +26,15 @@ public struct Option<T>
         return new Option<T>();
     }
 
-    public bool HasValue => hasValue;
+    public bool HasValue => _hasValue;
 
     public T Value
     {
         get
         {
-            if (!hasValue)
+            if (!_hasValue)
                 throw new InvalidOperationException("Option does not have a value.");
-            return value;
+            return _value;
         }
     }
 }

@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
-using Xunit;
 using ControllingApi.Controllers;
+using ControllingApi.Data;
+using ControllingApi.Repository;
 using Moq;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
@@ -29,37 +29,37 @@ namespace UnitTests.Controllers
 
         private static TurbineReport GetScenario1Report()
         {
-            return new TurbineReport(new List<TurbineDTO>
+            return new TurbineReport(new List<TurbineDto>
         {
-            new TurbineDTO("A", 0),
-            new TurbineDTO("B", 2),
-            new TurbineDTO("C", 0),
-            new TurbineDTO("D", 0),
-            new TurbineDTO("E", 5)
+            new TurbineDto("A", 0),
+            new TurbineDto("B", 2),
+            new TurbineDto("C", 0),
+            new TurbineDto("D", 0),
+            new TurbineDto("E", 5)
         }, 10, 7, 6);
         }
 
         private static TurbineReport GetScenario2Report()
         {
-            return new TurbineReport(new List<TurbineDTO>
+            return new TurbineReport(new List<TurbineDto>
         {
-            new TurbineDTO("A", 0),
-            new TurbineDTO("B", 2),
-            new TurbineDTO("C", 6),
-            new TurbineDTO("D", 0),
-            new TurbineDTO("E", 5)
+            new TurbineDto("A", 0),
+            new TurbineDto("B", 2),
+            new TurbineDto("C", 6),
+            new TurbineDto("D", 0),
+            new TurbineDto("E", 5)
         }, 15, 13, 6);
         }
 
         private static TurbineReport GetScenario3Report()
         {
-            return new TurbineReport(new List<TurbineDTO>
+            return new TurbineReport(new List<TurbineDto>
             {
-                new TurbineDTO("A", 0),
-                new TurbineDTO("B", 0),
-                new TurbineDTO("C", 0),
-                new TurbineDTO("D", 0),
-                new TurbineDTO("E", 5)
+                new TurbineDto("A", 0),
+                new TurbineDto("B", 0),
+                new TurbineDto("C", 0),
+                new TurbineDto("D", 0),
+                new TurbineDto("E", 5)
             }, 15, 5, 4);
         }
 

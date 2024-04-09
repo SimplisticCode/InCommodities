@@ -1,10 +1,12 @@
+namespace ControllingApi.Data;
+
 public record TurbineReport(
-    List<TurbineDTO> Turbines,
+    List<TurbineDto> Turbines,
     int TargetProduction,
     int CurrentProduction,
     int PriceLimit)
 {
-    public List<TurbineDTO> Turbines { get; init; } = Turbines ?? throw new ArgumentNullException(nameof(Turbines));
+    public List<TurbineDto> Turbines { get; init; } = Turbines ?? throw new ArgumentNullException(nameof(Turbines));
 
     public int TargetProduction { get; init; } = TargetProduction > 0 ? TargetProduction
         : throw new ArgumentOutOfRangeException(nameof(TargetProduction), "Must be positive");

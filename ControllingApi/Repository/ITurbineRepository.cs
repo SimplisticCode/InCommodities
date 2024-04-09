@@ -1,4 +1,6 @@
-using System.Collections.Generic;
+using ControllingApi.Data;
+
+namespace ControllingApi.Repository;
 
 public interface ITurbineRepository
 {

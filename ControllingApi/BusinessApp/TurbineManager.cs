@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ControllingApi.Data;
+using ControllingApi.Repository;
 using Microsoft.Extensions.Logging;
 
 public class TurbineManager : ITurbineManager
@@ -28,7 +30,7 @@ public class TurbineManager : ITurbineManager
     public async Task<TurbineReport> GetTurbineReportAsync()
     {
         var turbines = await _turbineRepository.GetAllTurbines();
-        var turbineDTOs = turbines.Select(t => new TurbineDTO(t.Name, t.GetCurrentProduction())).ToList();
+        var turbineDTOs = turbines.Select(t => new TurbineDto(t.Name, t.GetCurrentProduction())).ToList();
         return new TurbineReport(turbineDTOs, _needed_capacity, _produced_capacity, _marketPrice);
     }
 

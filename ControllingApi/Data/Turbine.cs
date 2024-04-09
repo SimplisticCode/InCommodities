@@ -1,41 +1,36 @@
 using System.ComponentModel.DataAnnotations;
-public class Turbine
+
+namespace ControllingApi.Data;
+
+public class Turbine(string name, int capacity, int productionCost)
 {
     [Required]
-    public readonly int Capacity;
+    public readonly int Capacity = Math.Max(capacity, 0);
 
     [Required]
-    public readonly int ProductionCost;
+    public readonly int ProductionCost = Math.Max(productionCost, 0);
 
     [Required, StringLength(50), Key]
-    public readonly string Name;
-    private bool running;
+    public readonly string Name = name ?? throw new ArgumentNullException(nameof(name));
+    private bool _running = false;
 
 
-    public Turbine(string name, int capacity, int productionCost)
-    {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-        Capacity = Math.Max(capacity, 0);
-        ProductionCost = Math.Max(productionCost, 0);
-        running = false;
-    }
-
-    public bool isRunning => running;
+    public bool IsRunning => _running;
 
     public int GetCurrentProduction()
     {
-        return running ? Capacity : 0;
+        return _running ? Capacity : 0;
     }
 
     public Task Start()
     {
-        running = true;
+        _running = true;
         return Task.CompletedTask;
     }
 
     public Task Stop()
     {
-        running = false;
+        _running = false;
         return Task.CompletedTask;
     }
 }

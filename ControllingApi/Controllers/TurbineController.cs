@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using ControllingApi.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControllingApi.Controllers
@@ -8,17 +8,9 @@ namespace ControllingApi.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public class TurbineController : ControllerBase
+    public class TurbineController(ILogger<TurbineController> logger, ITurbineManager turbineManager)
+        : ControllerBase
     {
-        private readonly ILogger<TurbineController> _logger;
-        private readonly ITurbineManager _turbineManager;
-
-        public TurbineController(ILogger<TurbineController> logger, ITurbineManager turbineManager)
-        {
-            _logger = logger;
-            _turbineManager = turbineManager;
-        }
-
         /// <summary>
         /// Get the current state of the turbines in the wind farm.
         /// </summary>
@@ -28,7 +20,7 @@ namespace ControllingApi.Controllers
         [HttpGet("TurbineReport", Name = "GetTurbineState")]
         public async Task<TurbineReport> GetTurbineState()
         {
-            return await _turbineManager.GetTurbineReportAsync();
+            return await turbineManager.GetTurbineReportAsync();
         }
 
         
@@ -50,8 +42,8 @@ namespace ControllingApi.Controllers
             {
                 return BadRequest("Amount to increase capacity cannot be negative");
             }
-            await _turbineManager.IncreaseCapacity(amount);
-            _logger.LogInformation("Increased capacity by {amount}", amount);
+            await turbineManager.IncreaseCapacity(amount);
+            logger.LogInformation("Increased capacity by {amount}", amount);
             return Ok();
         }
 
@@ -73,8 +65,8 @@ namespace ControllingApi.Controllers
             {
                 return BadRequest("Amount to decrease capacity cannot be negative");
             }
-            await _turbineManager.DecreaseCapacity(amount);
-            _logger.LogInformation("Decreased capacity by {amount}", amount);
+            await turbineManager.DecreaseCapacity(amount);
+            logger.LogInformation("Decreased capacity by {amount}", amount);
             return Ok();
         }
 
@@ -97,8 +89,8 @@ namespace ControllingApi.Controllers
             {
                 return BadRequest("Price cannot be negative");
             }
-            await _turbineManager.SetMarketPrice(price);
-            _logger.LogInformation("Market price set to {price}", price);
+            await turbineManager.SetMarketPrice(price);
+            logger.LogInformation("Market price set to {price}", price);
             return Ok();
         }
     }

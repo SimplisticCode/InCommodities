@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ControllingApi.Data;
 
+namespace ControllingApi.Repository;
 
 /// <summary>
 /// Represents a DAL for managing turbines - using an in-memory list (Could be replaced with a database).
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 public class TurbineRepository : ITurbineRepository
 {
     // List of turbines to manage
-    private List<Turbine> turbines;
+    private List<Turbine> _turbines;
 
 
     /// <summary>
@@ -17,7 +16,7 @@ public class TurbineRepository : ITurbineRepository
     /// </summary>
     public TurbineRepository()
     {
-        turbines = new List<Turbine>(){
+        _turbines = new List<Turbine>(){
             new Turbine("A", 2, 15),
             new Turbine("B", 2, 5),
             new Turbine("C", 6, 5),
@@ -32,10 +31,9 @@ public class TurbineRepository : ITurbineRepository
     /// <returns></returns>
     public async Task StopAllTurbines()
     {
-        foreach (var turbine in turbines)
+        foreach (var turbine in _turbines.Where(turbine => turbine.IsRunning))
         {
-            if (turbine.isRunning)
-                await turbine.Stop();
+            await turbine.Stop();
         }
     }
 
@@ -45,9 +43,9 @@ public class TurbineRepository : ITurbineRepository
     /// <returns></returns>
     public async Task StartAllTurbines()
     {
-        foreach (var turbine in turbines)
+        foreach (var turbine in _turbines)
         {
-            if (!turbine.isRunning)
+            if (!turbine.IsRunning)
                 await turbine.Start();
         }
     }
@@ -91,7 +89,7 @@ public class TurbineRepository : ITurbineRepository
     /// <param name="turbine">The turbine to add.</param>
     public async Task AddTurbine(Turbine turbine)
     {
-        await Task.Run(() => turbines.Add(turbine));
+        await Task.Run(() => _turbines.Add(turbine));
     }
 
     /// <summary>
@@ -103,24 +101,24 @@ public class TurbineRepository : ITurbineRepository
         var optionType = FindTurbine(name);
         if (optionType.HasValue)
         {
-            turbines.Remove(optionType.Value);
+            _turbines.Remove(optionType.Value);
         }
         return Task.CompletedTask;
     }
 
     public Task<List<Turbine>> TurbinesWithCostLessThan(int cost)
     {
-        return Task.FromResult(turbines.FindAll(t => t.ProductionCost < cost));
+        return Task.FromResult(_turbines.FindAll(t => t.ProductionCost < cost));
     }
 
     public Task<List<Turbine>> TurbinesWithCapacityLessThan(int capacity)
     {
-        return Task.FromResult(turbines.FindAll(t => t.Capacity < capacity));
+        return Task.FromResult(_turbines.FindAll(t => t.Capacity < capacity));
     }
 
     public Task<List<Turbine>> GetAllTurbines()
     {
-        return Task.FromResult(turbines);
+        return Task.FromResult(_turbines);
     }
 
     private Option<Turbine> FindTurbine(string name)
@@ -129,7 +127,7 @@ public class TurbineRepository : ITurbineRepository
         {
             return Option<Turbine>.None<Turbine>();
         }
-        var turbine = turbines.FirstOrDefault(t => t.Name == name);
+        var turbine = _turbines.FirstOrDefault(t => t.Name == name);
         return turbine != null ? Option<Turbine>.Some(turbine) : Option<Turbine>.None<Turbine>();
     }
 
