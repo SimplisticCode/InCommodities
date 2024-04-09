@@ -37,3 +37,16 @@ jobs:
     # Build the project
     - name: Build
       run: dotnet build "${{ env.Solution_Name }}" --configuration ${{ matrix.configuration }}
+
+    # Run unit tests
+    - name: Test
+      run: dotnet test "${{ env.Solution_Name }}" --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=test_results.xml"
+      continue-on-error: true
+
+    # Upload test results (optional, but useful for viewing test results in GitHub Actions if tests fail)
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always() # This ensures the test results are uploaded even if the test step fails
+      with:
+        name: Test Results
+        path: "**/test_results.xml"
