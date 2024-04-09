@@ -2,22 +2,21 @@ using System.ComponentModel.DataAnnotations;
 public class Turbine
 {
     [Required]
-    public int Capacity { get; set; }
+    public readonly int Capacity;
 
     [Required]
-    public int ProductionCost { get; set; }
+    public readonly int ProductionCost;
 
     [Required, StringLength(50), Key]
-    public string Name { get; set; }
-
+    public readonly string Name;
     private bool running;
 
 
     public Turbine(string name, int capacity, int productionCost)
     {
-        Name = name;
-        Capacity = capacity;
-        ProductionCost = productionCost;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Capacity = Math.Max(capacity, 0);
+        ProductionCost = Math.Max(productionCost, 0);
         running = false;
     }
 
