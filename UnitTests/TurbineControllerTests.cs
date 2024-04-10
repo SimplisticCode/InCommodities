@@ -11,13 +11,14 @@ namespace UnitTests.Controllers
     {
         private bool CompareTurbineReports(TurbineReport report1, TurbineReport report2)
         {
+            // Utilizing value equality for records and short-circuiting
             return report1.Turbines.Count == report2.Turbines.Count &&
-                   report1.Turbines.All(t1 =>
-                        report2.Turbines.Any(t2 =>
-                            t2.Name == t1.Name && t2.Production == t1.Production)) &&
-                   report1.TargetProduction == report2.TargetProduction &&
+                report1.TargetProduction == report2.TargetProduction &&
                    report1.CurrentProduction == report2.CurrentProduction &&
-                   report1.PriceLimit == report2.PriceLimit;
+                   report1.PriceLimit == report2.PriceLimit &&
+                   report1.Turbines.All(t1 =>
+                        report2.Turbines.Any(t2 => t2 == t1));
+
         }
 
         public static IEnumerable<object[]> TurbineScenarioData => new List<object[]>
@@ -63,10 +64,32 @@ namespace UnitTests.Controllers
             }, 15, 5, 4);
         }
 
+        [Fact]
+        public void Test_CompareTurbineReports_SimilarReports_ReturnsTrue()
+        {
+            // Arrange
+            var report1 = GetScenario1Report();
+            var report2 = GetScenario1Report();
+
+            // Assert
+            Assert.True(CompareTurbineReports(report1, report2));
+        }
+
+        [Fact]
+        public void Test_CompareTurbineReports_DifferentReports_ReturnsFalse()
+        {
+            // Arrange
+            var report1 = GetScenario1Report();
+            var report2 = GetScenario2Report();
+
+            // Assert
+            Assert.False(CompareTurbineReports(report1, report2));
+        }
+
 
         [Theory]
         [MemberData(nameof(TurbineScenarioData))]
-        public async Task GetTurbineState_ReturnsTurbineReport(int capacity, int price, TurbineReport expectedReport)
+        public async Task GetTurbineState_ReturnsCorrectTurbineReport(int capacity, int price, TurbineReport expectedReport)
         {
             // Arrange
             var mockLoggerController = new Mock<ILogger<TurbineController>>();
